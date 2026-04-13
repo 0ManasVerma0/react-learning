@@ -1,10 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const App = () => {
 
   const [title, setTitle] = useState('')
   const [detail, setDetail] = useState('')
-  const [task, setTask] = useState([])
+  const [task, setTask] = useState(() => {
+    const savedNotes = localStorage.getItem('notes')
+    return savedNotes ? JSON.parse(savedNotes) : []
+  })
+
+  // Save notes to localStorage whenever task changes
+  useEffect(() => {
+    localStorage.setItem('notes', JSON.stringify(task))
+  }, [task])
 
   const submitHandler = (e) => {
     e.preventDefault()
